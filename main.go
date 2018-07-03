@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"math"
 	"os"
 	"strings"
 )
@@ -56,11 +57,19 @@ func hueToRGB(p, q, t float64) float64 {
 	return p
 }
 
-func rainbow(input string) {
+func rainbow(input string, repeated bool) {
 	steps := strings.Split(input, "")
 
 	for i, step := range steps {
-		h := float64(i) / float64(len(steps))
+		var h float64
+
+		if repeated {
+			h = float64(i) / 10
+			h = h - math.Floor(h)
+		} else {
+			h = float64(i) / float64(len(steps))
+		}
+
 		r, g, b := HSLToRGB(h, 1.0, 0.8)
 		color := rgb(r, g, b)
 
@@ -74,10 +83,16 @@ func check(e error) {
 	}
 }
 
+var isRepeated bool
+
 func input() string {
-	flag.Parse()
 	var data []byte
 	var err error
+
+	flag.BoolVar(&isRepeated, "repeated", false, "Make colors look very repeated, kinda like temple events")
+
+	flag.Parse()
+
 	switch flag.NArg() {
 	case 0:
 		data, err = ioutil.ReadAll(os.Stdin)
@@ -96,5 +111,6 @@ func input() string {
 
 func main() {
 	words := input()
-	rainbow(words)
+
+	rainbow(words, isRepeated)
 }
