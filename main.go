@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"math"
 	"os"
 	"strings"
 )
@@ -61,9 +60,7 @@ func rainbow(input string) {
 	steps := strings.Split(input, "")
 
 	for i, step := range steps {
-		h := float64(i) / 10
-		h = h - math.Floor(h)
-
+		h := float64(i) / float64(len(steps))
 		r, g, b := HSLToRGB(h, 1.0, 0.8)
 		color := rgb(r, g, b)
 
