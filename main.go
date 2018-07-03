@@ -9,12 +9,6 @@ import (
 	"strings"
 )
 
-const (
-	G = "\033[1;32m"
-	B = "\033[1;34m"
-	P = "\033[1;35m"
-)
-
 func rgb(r, g, b int) string {
 	return fmt.Sprintf("\x1b[38;2;%d;%d;%dm", r, g, b)
 }
